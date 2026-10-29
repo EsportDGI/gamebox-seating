@@ -14,7 +14,7 @@ Interaktivt værktøj til at fordele og finde pladser. Ren HTML/JS, ingen build 
 
 ## Sådan redigerer du (administrator)
 1. Åbn siden med `#admin` i enden, fx `https://<brugernavn>.github.io/gamebox-seating/#admin`.
-2. Læg pladser ind, tilføj hold (navn + antal), og ret manuelt om nødvendigt. Dine ændringer gemmes som kladde i din egen browser.
+2. Tilføj hold (navn + antal), og ret manuelt om nødvendigt. Dine ændringer gemmes som kladde i din egen browser.
 3. Tryk **Download data.json**.
 4. I repoet: **Add file → Upload files**, upload den nye `data.json` (overskriv den gamle) og commit.
 5. Siden opdateres for alle efter et minuts tid.
@@ -23,3 +23,6 @@ Interaktivt værktøj til at fordele og finde pladser. Ren HTML/JS, ingen build 
 - Alle kan åbne siden med `#admin` og lege med den, men ændringer gemmes kun i deres egen browser. Kun den `data.json`, du committer, er synlig for andre.
 - Er repoet offentligt, kan alle læse `data.json` med holdnavne. Brug et privat repo eller skån holdnavne, hvis det er et problem.
 - Åbner du `index.html` direkte fra din computer, bruger den den indbyggede demo-data i stedet for `data.json`.
+
+## Hallen
+Plantegningen af Hal K og logoerne er indlejret i `index.html`, så du kun behøver `index.html` og `data.json`. De 900 pladser (sektion A–I) ligger inden for den røde markering fra haloversigten.
