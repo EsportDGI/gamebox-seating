@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gamebox 2027 – Find din plads</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f6f8;--card:#fff;--tx:#14202b;--mu:#5d6b78;--ac:#d7263d;--bd:#d5dce3;--seat:#e9edf1;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161c;--card:#19212a;--tx:#e8edf2;--mu:#98a6b3;--ac:#ff5a6e;--bd:#2c3844;--seat:#26313c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10161c;--card:#19212a;--tx:#e8edf2;--mu:#98a6b3;--ac:#ff5a6e;--bd:#2c3844;--seat:#26313c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:20px 16px 8px;max-width:1200px;margin:auto}
+h1{margin:0;font-size:22px}h1 span{color:var(--ac)}
+p.sub{margin:4px 0 0;color:var(--mu)}
+main{max-width:1200px;margin:auto;padding:8px 16px 40px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0}
+input[type=search],textarea{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+textarea{min-height:90px;font-family:ui-monospace,monospace;font-size:13px}
+button{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:7px 12px;border-radius:8px;cursor:pointer}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;max-height:140px;overflow:auto}
+.chip{display:inline-flex;gap:6px;align-items:center;padding:4px 10px;border-radius:99px;font-size:13px}
+.chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.res h2{margin:0 0 4px;font-size:18px}.res .big{font-size:26px;font-weight:700}
+.map{overflow-x:auto}
+.secs{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.sec h3{margin:0 0 6px;font-size:14px;color:var(--mu)}
+.tbl{display:flex;gap:3px;margin-bottom:5px;padding:3px;border:1px dashed var(--bd);border-radius:6px;width:max-content}
+.seat{width:24px;height:24px;border-radius:4px;background:var(--seat);font-size:8px;display:flex;align-items:center;justify-content:center;color:var(--mu);transition:.15s}
+.seat.t{color:#111;font-weight:600}
+.dim .seat.t{opacity:.18}
+.seat.sel{outline:2px solid var(--tx);transform:scale(1.15);z-index:2}.dim .seat.t.sel{opacity:1}
+.adm .seat{cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.warn{color:var(--ac)}.mu{color:var(--mu);font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>Gamebox <span>2027</span> – Find din plads</h1>
+<p class="sub">Søg på din forening, klub, skole eller dit hold og se, hvor I skal sidde.</p></header>
+<main>
+<div id="admin" class="card" hidden></div>
+<div class="card"><input id="q" type="search" placeholder="Søg efter forening, hold, klub eller skole…" autocomplete="off">
+<div id="chips" class="chips"></div></div>
+<div id="res" class="card res" hidden></div>
+<div class="card map"><div id="app"></div>
+<p class="mu" id="legend"></p></div>
+</main>
+<script type="application/json" id="st">{"layout":[{"s":"A","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"B","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"C","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"D","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"E","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"F","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"G","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"H","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"I","tables":[10,10,10,10,10,10,10,10,10,10]},{"s":"J","tables":[10,10,10,10,10,10,10,10,10,10]}],"teams":[{"name":"Atlantic","count":73},{"name":"Espergærde Esport","count":61},{"name":"Gator Gaming","count":47},{"name":"Amager Esport & Gaming","count":39},{"name":"Skjern Esport","count":32},{"name":"Black Bird Academy","count":31},{"name":"Aarhus Esport","count":30},{"name":"Aab Esport","count":30},{"name":"Hvidovre Esport","count":24},{"name":"Vrigsted Efterskole","count":23},{"name":"Herning Esport","count":19},{"name":"Ølgod Efterskole","count":16},{"name":"Outpost Esport","count":11},{"name":"Fortress Esport","count":5}],"assign":{}}</script>
+<script>
+const S=JSON.parse(document.getElementById('st').textContent);
+const $=id=>document.getElementById(id);
+let sel=null,isAdmin=false,art=null,seats=[];
+const hue=n=>{const i=S.teams.findIndex(t=>t.name===n);return i<0?0:(i*47)%360};
+const col=n=>`hsl(${hue(n)},70%,${matchMedia('(prefers-color-scheme:dark)').matches?'62%':'72%'})`;
+const pad=n=>String(n).padStart(3,'0');
+function build(){seats=[];S.layout.forEach(sc=>{let k=0;sc.tables.forEach((n,ti)=>{for(let i=0;i<n;i++){k++;seats.push({id:sc.s+pad(k),s:sc.s,t:ti})}})})}
+function parseLayout(txt){const m=new Map();txt.split(/\r?\n/).forEach(l=>{const p=l.split(/[;,\t]/).map(x=>x.trim());if(p.length<3)return;const n=parseInt(p[2]);if(!n)return;if(!m.has(p[0]))m.set(p[0],[]);m.get(p[0]).push(n)});return[...m].map(([s,tables])=>({s,tables}))}
+function parseTeams(txt){return txt.split(/\r?\n/).map(l=>l.split(/[;\t]|,(?=\s*\d+\s*$)/).map(x=>x.trim())).filter(p=>p[0]&&parseInt(p[1])>0).map(p=>({name:p[0],count:parseInt(p[1])}))}
+function allocate(){S.assign={};[...S.teams].sort((a,b)=>b.count-a.count).forEach(place)}
+function place(t){
+  {
+    let need=t.count;
+    const runs=()=>{const r=[];let cur=[];seats.forEach(s=>{if(!S.assign[s.id]&&cur.length&&cur[0].s===s.s)cur.push(s);else if(!S.assign[s.id]){if(cur.length)r.push(cur);cur=[s]}else{if(cur.length)r.push(cur);cur=[]}});if(cur.length)r.push(cur);return r};
+    const fit=runs().filter(r=>r.length>=need).sort((a,b)=>a.length-b.length)[0];
+    if(fit){fit.slice(0,need).forEach(s=>S.assign[s.id]=t.name);return}
+    while(need>0){const r=runs().sort((a,b)=>b.length-a.length)[0];if(!r)break;const take=r.slice(0,need);take.forEach(s=>S.assign[s.id]=t.name);need-=take.length}
+  }
+}
+function ranges(ids){const by={};ids.forEach(id=>{(by[id[0]]??=[]).push(parseInt(id.slice(1)))});
+  return Object.entries(by).map(([s,a])=>{a.sort((x,y)=>x-y);const out=[];let st=a[0],pv=a[0];for(let i=1;i<=a.length;i++){if(a[i]!==pv+1){out.push(st===pv?s+pad(st):s+pad(st)+'–'+s+pad(pv));st=a[i]}pv=a[i]}return out.join(', ')}).join(' · ')}
+function render(){
+  const app=$('app');
+  if(!S.layout.length){app.innerHTML='<p class="mu">Pladsplanen er ikke lagt op endnu. Kom tilbage senere.</p>';return}
+  app.className=(sel?'dim ':'')+(isAdmin?'adm':'');
+  app.innerHTML='<div class="secs">'+S.layout.map(sc=>{let k=0;return `<div class="sec"><h3>Sektion ${sc.s}</h3>`+sc.tables.map(n=>{let h='<div class="tbl">';for(let i=0;i<n;i++){k++;const id=sc.s+pad(k),t=S.assign[id],on=t&&t===sel;
+    h+=`<div class="seat${t?' t':''}${on?' sel':''}" data-id="${id}" title="${id}${t?' – '+t.replace(/"/g,''):''}" style="${t&&(!sel||on)?'background:'+col(t):t?'background:'+col(t):''}">${k}</div>`}return h+'</div>'}).join('')+'</div>'}).join('')+'</div>';
+  if(sel)app.querySelectorAll('.seat.t:not(.sel)').forEach(e=>{});
+  $('legend').textContent=`${seats.length} pladser · ${Object.keys(S.assign).length} fordelt`;
+  chips();result();tl();if(isAdmin)try{localStorage.setItem('gb-seating',JSON.stringify(S))}catch(e){}
+}
+function chips(){const v=$('q').value.toLowerCase().trim();
+  const l=S.teams.filter(t=>t.name.toLowerCase().includes(v));
+  $('chips').innerHTML=l.map(t=>`<button class="chip" data-n="${t.name.replace(/"/g,'&quot;')}" style="background:${col(t.name)};color:#111;border-color:transparent"><b>${t.name.replace(/</g,'&lt;')}</b> ${t.count}</button>`).join('')||'<span class="mu">Ingen hold fundet</span>'}
+function result(){const r=$('res');if(!sel){r.hidden=true;return}
+  const ids=seats.filter(s=>S.assign[s.id]===sel).map(s=>s.id),t=S.teams.find(x=>x.name===sel);
+  r.hidden=false;r.innerHTML=`<h2></h2><div class="big">${ids.length?ranges(ids):'Ingen pladser fordelt endnu'}</div><div class="mu">${ids.length} af ${t?t.count:'?'} pladser · markeret på kortet nedenfor</div>`;
+  r.querySelector('h2').textContent=sel;
+  if(t&&ids.length<t.count)r.insertAdjacentHTML('beforeend',`<div class="warn">Mangler ${t.count-ids.length} pladser</div>`)}
+function free(n){for(const k in S.assign)if(S.assign[k]===n)delete S.assign[k]}
+function tl(){const e=$('tl');if(!e)return;e.innerHTML='';S.teams.forEach(t=>{
+ const got=seats.filter(s=>S.assign[s.id]===t.name).length;
+ const r=document.createElement('div');r.className='row';r.style.cssText='align-items:center;margin:4px 0';
+ const n=document.createElement('button');n.textContent=t.name;n.style.cssText='flex:1;text-align:left;background:'+col(t.name)+';color:#111;border-color:transparent';n.onclick=()=>pick(t.name);
+ const c=document.createElement('input');c.type='number';c.min=1;c.value=t.count;c.style.cssText='width:64px;padding:6px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx)';
+ c.onchange=()=>{const v=parseInt(c.value);if(!(v>0)){c.value=t.count;return}free(t.name);t.count=v;place(t);render()};
+ const x=document.createElement('button');x.textContent='×';x.title='Fjern hold';x.onclick=()=>{free(t.name);S.teams=S.teams.filter(y=>y!==t);if(sel===t.name)sel=null;render()};
+ r.append(n,c,x);if(got<t.count){const w=document.createElement('span');w.className='warn';w.textContent='mangler '+(t.count-got);r.append(w)}
+ e.append(r)})}
+function pick(n){sel=n;render();const e=document.querySelector('.seat.sel');if(e)e.scrollIntoView({block:'center',inline:'center',behavior:'smooth'})}
+$('q').addEventListener('input',chips);
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=$('q').value.toLowerCase().trim();const m=S.teams.find(t=>t.name.toLowerCase().includes(v));if(m)pick(m.name)}});
+$('chips').addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(b.dataset.n)});
+$('app').addEventListener('click',e=>{const s=e.target.closest('.seat');if(!s)return;const id=s.dataset.id,t=S.assign[id];
+  if(isAdmin&&sel){if(t===sel)delete S.assign[id];else S.assign[id]=sel;render()}else if(t)pick(t)});
+
+function adminUI(){const a=$('admin');a.hidden=false;
+  a.innerHTML=`<b>Administrator</b><p class="mu">1) Læg pladserne ind (CSV: <code>sektion;bord;antal pladser</code>), 2) tilføj hold med navn og antal – de får automatisk pladser, 3) download data.json og læg den i dit GitHub-repo. Ret antal eller fjern hold (×) i listen. Klik på en plads for at flytte den manuelt til det valgte hold.</p>
+<div class="grid"><div><textarea id="lt" placeholder="A;1;10&#10;A;2;10&#10;B;1;8"></textarea><div class="row"><button id="bl" class="p">Indlæs pladser</button><button id="be">Brug eksempel</button><label><input type="file" id="fl" accept=".csv,.txt" hidden><button onclick="fl.click()">Upload CSV</button></label></div></div>
+<div><b>Tilføj hold</b><div class="row"><input id="tn" type="search" placeholder="Navn" style="flex:2;min-width:140px"><input id="tc" type="number" min="1" placeholder="Antal" style="flex:1;min-width:70px;padding:11px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit"><button id="bt" class="p">Tilføj</button></div><div id="tl" style="margin-top:8px;max-height:280px;overflow:auto"></div></div></div>
+<div class="row"><button id="ba" class="p">Fordel alle forfra</button><button id="bc">Ryd fordeling</button><button id="bp" class="p">Download data.json</button><button id="br">Nulstil kladde</button></div><p id="am" class="mu"></p>`;
+  $('lt').value=S.layout.flatMap(s=>s.tables.map((n,i)=>`${s.s};${i+1};${n}`)).join('\n');
+  tl();
+  const msg=m=>$('am').textContent=m;
+  const rd=(f,t)=>f.addEventListener('change',async()=>{$(t).value=await f.files[0].text()});rd($('fl'),'lt');
+  $('bl').onclick=()=>{S.layout=parseLayout($('lt').value);S.assign={};build();render();msg(seats.length+' pladser indlæst')};
+  $('be').onclick=()=>{$('lt').value='ABCDEFGHIJ'.split('').flatMap(s=>[1,2,3,4,5,6,7,8,9,10].map(i=>`${s};${i};10`)).join('\n')};
+  $('bt').onclick=()=>{const name=$('tn').value.trim(),c=parseInt($('tc').value);
+ if(!name||!(c>0))return msg('Skriv både navn og antal.');
+ if(S.teams.some(t=>t.name.toLowerCase()===name.toLowerCase()))return msg('Holdet findes allerede.');
+ const t={name,count:c};S.teams.push(t);place(t);$('tn').value='';$('tc').value='';$('q').value='';pick(name);
+ const got=seats.filter(s=>S.assign[s.id]===name).length;msg(got<c?`Kun ${got} af ${c} pladser var ledige`:`${name} fik ${c} pladser`)};
+ $('tc').addEventListener('keydown',e=>{if(e.key==='Enter')$('bt').click()});
+  $('ba').onclick=()=>{allocate();render();const miss=S.teams.filter(t=>seats.filter(s=>S.assign[s.id]===t.name).length<t.count).length;msg(miss?miss+' hold fik ikke alle pladser':'Alle hold har fået pladser')};
+  $('bc').onclick=()=>{S.assign={};render()};
+  $('bp').onclick=()=>{const b=new Blob([JSON.stringify({layout:S.layout,teams:S.teams,assign:S.assign},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='data.json';a.click();msg('Læg data.json i repoet og commit, så er ændringerne live.')};
+  $('br').onclick=()=>{localStorage.removeItem('gb-seating');location.reload()};
+}
+build();render();
+(async()=>{
+ isAdmin=/admin/.test(location.hash+location.search);
+ let d=null;
+ try{const l=isAdmin&&localStorage.getItem('gb-seating');if(l)d=JSON.parse(l)}catch(e){}
+ if(!d)try{const r=await fetch('data.json',{cache:'no-store'});if(r.ok)d=await r.json()}catch(e){}
+ if(d){S.layout=d.layout||[];S.teams=d.teams||[];S.assign=d.assign||{}}
+ build();if(S.teams.length&&!Object.keys(S.assign).length)allocate();
+ if(isAdmin)adminUI();render();
+})();
+</script></body></html>

@@ -1,0 +1,213 @@
+{
+ "layout": [
+  {
+   "s": "A",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "B",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "C",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "D",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "E",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "F",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "G",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "H",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "I",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  {
+   "s": "J",
+   "tables": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  }
+ ],
+ "teams": [
+  {
+   "name": "Atlantic",
+   "count": 73
+  },
+  {
+   "name": "Espergærde Esport",
+   "count": 61
+  },
+  {
+   "name": "Gator Gaming",
+   "count": 47
+  },
+  {
+   "name": "Amager Esport & Gaming",
+   "count": 39
+  },
+  {
+   "name": "Skjern Esport",
+   "count": 32
+  },
+  {
+   "name": "Black Bird Academy",
+   "count": 31
+  },
+  {
+   "name": "Aarhus Esport",
+   "count": 30
+  },
+  {
+   "name": "Aab Esport",
+   "count": 30
+  },
+  {
+   "name": "Hvidovre Esport",
+   "count": 24
+  },
+  {
+   "name": "Vrigsted Efterskole",
+   "count": 23
+  },
+  {
+   "name": "Herning Esport",
+   "count": 19
+  },
+  {
+   "name": "Ølgod Efterskole",
+   "count": 16
+  },
+  {
+   "name": "Outpost Esport",
+   "count": 11
+  },
+  {
+   "name": "Fortress Esport",
+   "count": 5
+  }
+ ],
+ "assign": {}
+}
